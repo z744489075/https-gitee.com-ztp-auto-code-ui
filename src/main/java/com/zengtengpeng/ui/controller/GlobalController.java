@@ -6,6 +6,7 @@ import com.zengtengpeng.autoCode.config.AutoCodeConfig;
 import com.zengtengpeng.autoCode.config.DatasourceConfig;
 import com.zengtengpeng.autoCode.config.GlobalConfig;
 import com.zengtengpeng.common.bean.DataRes;
+import com.zengtengpeng.jdbc.utils.JDBCUtils;
 import com.zengtengpeng.ui.constant.ParamConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,20 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yaml.snakeyaml.Yaml;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * 全局参数配置
  */
 @RestController
 @RequestMapping("/auto-code-ui/data/global")
+@ApiIgnore
 public class GlobalController {
 
 
@@ -57,9 +62,30 @@ public class GlobalController {
     @RequestMapping("saveConfig")
     public DataRes saveConfig(HttpServletRequest request, HttpServletResponse response, GlobalConfig globalConfig)  {
         AutoCodeConfig a = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
+        GlobalConfig globalConfig1 = a.getGlobalConfig();
+        globalConfig.setAutoCode(globalConfig1.getAutoCode());
         a.setGlobalConfig(globalConfig);
         return DataRes.success("成功");
     }
+
+    /**
+     * 获取数据库表名称
+     * @param request
+     * @param response
+     * @param globalConfig
+     * @return
+     */
+    @RequestMapping("getTablesName")
+    public DataRes getTablesName(HttpServletRequest request, HttpServletResponse response, GlobalConfig globalConfig)  {
+        try {
+            Connection connection = dataSource.getConnection();
+            List<String> tablesName = JDBCUtils.getTablesName(connection);
+            return DataRes.success(tablesName);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @PostConstruct
     public void init(){

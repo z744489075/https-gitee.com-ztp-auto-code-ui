@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zengtengpeng.autoCode.config.AutoCodeConfig;
 import com.zengtengpeng.autoCode.utils.MyStringUtils;
+import com.zengtengpeng.ui.constant.ParamConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +21,15 @@ public class AutoCodeUiServlet extends HttpServlet {
 
     protected void service(HttpServletRequest request, HttpServletResponse response) {
         try {
+
+            response.setHeader("Content-type", "text/html;charset=UTF-8");
             String contextPath = request.getContextPath();
             String requestURI = request.getRequestURI();
-
-            response.setCharacterEncoding("utf-8");
+            AutoCodeConfig autoCodeConfig = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
+            if(!autoCodeConfig.getGlobalConfig().getAutoCode()){
+                response.getWriter().println("autoCode=false.不能开启界面");
+                return;
+            }
 
             if (contextPath == null) { // root context
                 contextPath = "";
