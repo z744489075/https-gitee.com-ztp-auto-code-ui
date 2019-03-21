@@ -19,86 +19,97 @@
             <legend>全局参数配置(建议配置在配置文件中.在页面配置,当项目重启设置将失效)</legend>
         </fieldset>
         <div class="layui-form-item">
-            <label class="layui-form-label">生成代码的项目路径</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">根路径</label>
+            <div class="layui-input-inline">
                 <input type="text" name="parentPath" id="parentPath" lay-verify="required" autocomplete="off"
                        placeholder="请输入生成代码的项目路径" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">生成代码需要存放的项目根路径</div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">生成代码的父包</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">代码父包</label>
+            <div class="layui-input-inline">
                 <input type="text" name="parentPack" id="parentPack" lay-verify="required" autocomplete="off"
-                       placeholder="如父包是com.zengtengpeng.test,controller将在com.zengtengpeng.test.controller下,bean将在com.zengtengpeng.test.bean下,service,dao同理" class="layui-input"  >
+                       placeholder="如父包是com.zengtengpeng.test.控制器将在com.zengtengpeng.test.controller包下,bean将在com.zengtengpeng.test.bean下,service,dao同理" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">如父包是com.zengtengpeng.test.控制器将在com.zengtengpeng.test.controller包下</div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">是否覆盖生成</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">覆盖生成</label>
+            <div class="layui-input-inline">
                 <select name="cover" id="cover" lay-search>
                     <option value="false" >不覆盖</option>
                     <option value="true" >覆盖</option>
                 </select>
             </div>
+            <div class="layui-form-mid layui-word-aux">谨慎使用覆盖生成.覆盖初始化所有代码</div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">是否生成swagger注解</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">swagger注解</label>
+            <div class="layui-input-inline">
                 <select name="swagger" id="swagger" lay-search>
                     <option value="true" >生成</option>
                     <option value="false" >不生成</option>
                 </select>
             </div>
+            <div class="layui-form-mid layui-word-aux">是否使用swagger注解</div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">java在项目中的classpath位置</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">java位置</label>
+            <div class="layui-input-inline">
                 <input type="text" name="javaSource" id="javaSource" lay-verify="required" autocomplete="off"
                        placeholder="java在项目中的classpath位置" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">java的源文件目录.一般是src/main/java</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">resource位置</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="resources" id="resources" lay-verify="required" autocomplete="off"
                        placeholder="resource位置" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">resource的源文件目录.一般是src/main/resources</div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">xml存放的路径</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">xml目录</label>
+            <div class="layui-input-inline">
                 <input type="text" name="xmlPath" id="xmlPath" lay-verify="required" autocomplete="off"
                        placeholder="xml存放的路径" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">mybatis XML存放的文件夹</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">javaBean尾缀</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="packageBean" id="packageBean" lay-verify="required" autocomplete="off"
                        placeholder="javaBean尾缀" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">javaBean尾缀</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">dao尾缀</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="packageDao" id="packageDao" lay-verify="required" autocomplete="off"
                        placeholder="" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">dao尾缀</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">controller尾缀</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="packageController" id="packageController" lay-verify="required" autocomplete="off"
                        placeholder="" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">controller尾缀</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">service尾缀</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="packageService" id="packageService" lay-verify="required" autocomplete="off"
                        placeholder="" class="layui-input"  >
             </div>
+            <div class="layui-form-mid layui-word-aux">service尾缀</div>
         </div>
 
 

@@ -1,5 +1,0 @@
-globalConfig:
-    #生成代码的项目路径
-    parentPath: E:\resource\workspaceJDB\auto-code-web-demo
-    #生成代码的父包 如父包是com.zengtengpeng.test  controller将在com.zengtengpeng.test.controller下 bean 将在com.zengtengpeng.test.bean下 ,service,dao同理
-    parentPack: com.zengtengpeng.test

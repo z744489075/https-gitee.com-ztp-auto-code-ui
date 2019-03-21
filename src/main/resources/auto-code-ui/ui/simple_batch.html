@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+
+    <script type="text/javascript" src="../static/js/layui/layui.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/js/layui/css/layui.css"/>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/css/index.css"/>
+    <script type="text/javascript" src="../static/js/index.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../static/js/layui/css/formSelects-v4.css"/>
+</head>
+<body class="body-common">
+<div class="page-container">
+    <form class="layui-form layui-form-pane" >
+
+        <blockquote class="layui-elem-quote layui-text">
+            单表批量生成
+        </blockquote>
+        <div class="layui-form-item">
+            <label class="layui-form-label">请选择表</label>
+            <div class="layui-input-block">
+                <select name="dataName" id="dataName" xm-select="dataName"  xm-select-search="" lay-verify="required">
+                    <option >test</option>
+                </select>
+            </div>
+        </div>
+        <table id="table-data" lay-filter="table-data"></table>
+        <div class="layui-form-item" style="text-align: center">
+            <button class="layui-btn" lay-submit="" lay-filter="save-data" >确认生成</button>
+        </div>
+    </form>
+</div>
+<!--
+<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>-->
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    $(function () {
+        $.post("../data/global/getTablesName",function (data) {
+            if(data.code==0){
+                var d=data.data;
+                var text="";
+                for (var i=0;i<d.length;i++){
+                    text+="<option value=\""+d[i]+"\">"+d[i]+"</option>";
+                }
+                $("#dataName").html(text);
+            }else{
+                layer.alert("查询失败->"+data.message)
+            }
+        })
+    })
+    layui.config({
+        base: '../static/js/layui/extend/'
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+    var table;
+    var formSelects;
+    layui.use(['form', 'layedit', 'laydate','formSelects','table'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+         table = layui.table;
+        form.render();
+        formSelects = layui.formSelects;
+        formSelects.render();
+
+        //自定义验证规则
+        form.verify({});
+
+        //监听提交
+        form.on('submit(save-data)', function (data) {
+            layer.confirm('批量生成不能自定义属性.只能按照系统默认的参数来生成.确定要生成吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.post("../data/simple/buildBatch",data.field,function (data) {
+                    if(data.code==0){
+                        layer.alert("生成成功,具体请查看控制台打印日志")
+                    }else{
+                        layer.alert("生成失败->"+data.message)
+                    }
+                });
+            }, function(){
+
+            });
+
+            return false
+        });
+
+    });
+</script>
+
+</body>
+</html>

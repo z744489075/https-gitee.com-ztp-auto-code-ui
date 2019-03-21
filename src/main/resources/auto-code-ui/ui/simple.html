@@ -17,11 +17,11 @@
 <body class="body-common">
 <div class="page-container">
     <form class="layui-form layui-form-pane" >
-        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-            <legend>单表生成代码</legend>
-        </fieldset>
+
+        <blockquote class="layui-elem-quote layui-text">
+            单表生成代码
+        </blockquote>
         <input type="hidden" name="primaryKeys" id="primaryKeys">
-        <input type="hidden" name="parentPack" id="parentPack">
         <div class="layui-form-item">
             <label class="layui-form-label">请选择表</label>
             <div class="layui-input-block">
@@ -59,18 +59,21 @@
 <script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>-->
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-    $.post("../data/global/getTablesName",function (data) {
-        if(data.code==0){
-            var d=data.data;
-            var text="";
-            for (var i=0;i<d.length;i++){
-                text+="<option value=\""+d[i]+"\">"+d[i]+"</option>";
+    $(function () {
+        $.post("../data/global/getTablesName",function (data) {
+            if(data.code==0){
+                var d=data.data;
+                var text="";
+                for (var i=0;i<d.length;i++){
+                    text+="<option value=\""+d[i]+"\">"+d[i]+"</option>";
+                }
+                $("#dataName").html(text);
+            }else{
+                layer.alert("查询失败->"+data.message)
             }
-            $("#dataName").html(text);
-        }else{
-            layer.alert("查询失败->"+data.message)
-        }
+        })
     })
+
     // var data={"code":"0","message":"成功","time":null,"data":{"primaryKey":[{"jdbcName":"id","beanName":"id","jdbcType":"4","beanType":"java.lang.Integer","nullable":false,"length":"10","identity":true,"remarks":"主键","defaultValue":null,"json":false,"key":true,"beanName_":"Id","jdbcType_":"INTEGER","beanType_":"Integer"}],"cons":null,"tableRemarks":"单表代码生成","allColumns":[{"jdbcName":"id","beanName":"id","jdbcType":"4","beanType":"java.lang.Integer","nullable":false,"length":"10","identity":true,"remarks":"主键","defaultValue":null,"json":false,"key":true,"beanName_":"Id","jdbcType_":"INTEGER","beanType_":"Integer"},{"jdbcName":"name","beanName":"name","jdbcType":"12","beanType":"java.lang.String","nullable":true,"length":"50","identity":false,"remarks":"名称","defaultValue":null,"json":false,"key":false,"beanName_":"Name","jdbcType_":"VARCHAR","beanType_":"String"},{"jdbcName":"age","beanName":"age","jdbcType":"4","beanType":"java.lang.Integer","nullable":true,"length":"10","identity":false,"remarks":"年龄","defaultValue":null,"json":false,"key":false,"beanName_":"Age","jdbcType_":"INTEGER","beanType_":"Integer"},{"jdbcName":"status","beanName":"status","jdbcType":"4","beanType":"java.lang.Integer","nullable":true,"length":"10","identity":false,"remarks":"{\"name\":\"状态\",\"1\":\"启用\",\"0\":\"禁用\"}","defaultValue":null,"json":false,"key":false,"beanName_":"Status","jdbcType_":"INTEGER","beanType_":"Integer"},{"jdbcName":"birthday","beanName":"birthday","jdbcType":"91","beanType":"java.util.Date","nullable":true,"length":"10","identity":false,"remarks":"生日","defaultValue":null,"json":false,"key":false,"beanName_":"Birthday","jdbcType_":"DATE","beanType_":"Date"},{"jdbcName":"remarks","beanName":"remarks","jdbcType":"-1","beanType":"java.lang.String","nullable":true,"length":"65535","identity":false,"remarks":"备注","defaultValue":null,"json":false,"key":false,"beanName_":"Remarks","jdbcType_":"LONGVARCHAR","beanType_":"String"},{"jdbcName":"create_time","beanName":"createTime","jdbcType":"93","beanType":"java.util.Date","nullable":true,"length":"19","identity":false,"remarks":"创建时间","defaultValue":"CURRENT_TIMESTAMP","json":false,"key":false,"beanName_":"CreateTime","jdbcType_":"TIMESTAMP","beanType_":"Date"}],"parentPack":"com.zengtengpeng.test","mobelName":"test","tableName":"TestSimpleCode","tableValue":"testSimpleCode","dataName":"test_simple_code"}}
     function watchs(){
         if(!formSelects.value('dataName', 'valStr')){
@@ -83,7 +86,6 @@
                $("#tableRemarks").val(d.tableRemarks);
                $("#tableName").val(d.tableName);
                $("#primaryKeys").val(JSON.stringify(d.primaryKey));
-               $("#parentPack").val(d.parentPack);
 
                 table.render({
                     elem: '#table-data'
