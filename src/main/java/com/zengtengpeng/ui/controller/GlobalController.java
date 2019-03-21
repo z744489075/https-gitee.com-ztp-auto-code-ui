@@ -41,6 +41,17 @@ public class GlobalController {
     @Autowired
     private ServletContext servletContext;
 
+    private AutoCodeConfig autoCodeConfig;
+
+    public GlobalController() {
+
+    }
+
+    public GlobalController(GlobalConfig globalConfig) {
+        AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
+        autoCodeConfig.setGlobalConfig(globalConfig);
+        this.autoCodeConfig = autoCodeConfig;
+    }
 
     /**
      * 查询全局参数
@@ -108,7 +119,9 @@ public class GlobalController {
     @PostConstruct
     public void init(){
         Yaml yaml = new Yaml();
-        AutoCodeConfig autoCodeConfig = yaml.loadAs(StartCode.class.getClassLoader().getResourceAsStream("auto-code.yaml"), AutoCodeConfig.class);
+        if(autoCodeConfig==null){
+            autoCodeConfig = yaml.loadAs(StartCode.class.getClassLoader().getResourceAsStream("auto-code.yaml"), AutoCodeConfig.class);
+        }
 
         try {
             Connection connection = dataSource.getConnection();
@@ -123,5 +136,11 @@ public class GlobalController {
         }
     }
 
+    public AutoCodeConfig getAutoCodeConfig() {
+        return autoCodeConfig;
+    }
 
+    public void setAutoCodeConfig(AutoCodeConfig autoCodeConfig) {
+        this.autoCodeConfig = autoCodeConfig;
+    }
 }
