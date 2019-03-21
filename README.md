@@ -11,7 +11,7 @@
 
 3.[auto-code代码生成器](https://gitee.com/ztp/auto-code)
 
-4. layui
+4.layui
 
 
 #### 安装教程
@@ -39,7 +39,7 @@
     	</bean>
 ```
 
-> 2. 扫描controller时 必须要扫描 `com.zengtengpeng.ui.controller`,不然会找不到方法
+> 2. 扫描controller时 必须要扫描 `com.zengtengpeng.ui.controller`,如下:
 ```xml
 <!--扫描controller,多个用,号分隔  -->
 	<context:component-scan base-package="com.zengtengpeng.*.controller,com.zengtengpeng.ui.controller" />
@@ -55,7 +55,9 @@ globalConfig:
   parentPack: com.zengtengpeng.test
 ```
 
-> 4. 集成完毕,访问 http://localhost:8070/auto-code-ui/ui/index.html
+> 4. 集成完毕,启动自己的项目,访问 http://localhost:8080/auto-code-ui/ui/index.html.界面如下:
+
+![global](http://images.zengtengpeng.com/auto-code-ui/global.png)
 
 
 ### 补充说明
@@ -69,9 +71,9 @@ globalConfig:
         </plugin>
     </plugins>
     
->2.swagger2API接口文档.可选.如果不集成API看不了,(请注意.增加类的一定要在 `context:component-scan` 的扫描包里面.不然会找不到地址)
+>2.swagger2 API接口文档(可选,如果不集成API看不了.对代码没有任何影响),(请注意.增加类的一定要在 `context:component-scan` 的扫描包里面.不然会找不到地址)
 
-> 增加配置类
+> 增加swagger2配置类
 
 ```java
 import org.springframework.context.annotation.Bean;
