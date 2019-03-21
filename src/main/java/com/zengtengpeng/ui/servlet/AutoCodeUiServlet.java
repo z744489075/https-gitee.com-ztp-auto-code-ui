@@ -34,7 +34,7 @@ public class AutoCodeUiServlet extends HttpServlet {
             if (contextPath == null) { // root context
                 contextPath = "";
             }
-            String path = requestURI.substring(contextPath.length());
+            String path = requestURI.substring(contextPath.length()+1);
 
             InputStream inputStream = AutoCodeUiServlet.class.getClassLoader().getResourceAsStream(path);
             if (path.endsWith(".tff")) {
