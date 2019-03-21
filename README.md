@@ -1,37 +1,119 @@
 # auto-code-ui
-
+欢迎使用auto-code-ui可视化界面代码生成器.
 #### 介绍
-可视化界面生成单表,一对一,一对多,多对多代码
+本项目基于 [auto-code](https://gitee.com/ztp/auto-code),在该项目的基础上增加可视化界面生成 `单表`,`一对一`,`一对多`,`多对多`代码
 
 #### 软件架构
-软件架构说明
+
+1.springMVC
+
+2.servlet3.0
+
+3.[auto-code代码生成器](https://gitee.com/ztp/auto-code)
+
+4. layui
 
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+> 1.按照非常简单只需要在pom.xml增加一个jar包就行
 
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+```xml
+<dependency>
+    <groupId>com.zengtengpeng</groupId>
+    <artifactId>auto-code-ui</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
 
-#### 码云特技
+#### 使用说明 [实例地址](https://gitee.com/ztp/auto-code-web-demo)
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+>1.集成一个 id="dataSource" 的数据源(可以使用任何连接池.只要id=dataSource就行). 如下:
+```xml
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    		<property name="driverClassName" value="${database.driver}" />
+    		<property name="url" value="${database.url}" />
+    		<property name="username" value="${database.user}" />
+    		<property name="password" value="${database.password}" />
+    	</bean>
+```
+
+> 2. 扫描controller时 必须要扫描 `com.zengtengpeng.ui.controller`,不然会找不到方法
+```xml
+<!--扫描controller,多个用,号分隔  -->
+	<context:component-scan base-package="com.zengtengpeng.*.controller,com.zengtengpeng.ui.controller" />
+```
+
+
+> 3.在 `src/main/resources` 下增加`auto-code.yaml`文件
+```yaml
+globalConfig:
+  #生成代码的项目根路径
+  parentPath: E:\resource\workspaceJDB\auto-code-web-demo
+  #生成代码的父包,如父包是com.zengtengpeng.test则controller将在com.zengtengpeng.test.controller下.bean,service,dao同理
+  parentPack: com.zengtengpeng.test
+```
+
+> 4. 集成完毕,访问 http://localhost:8070/auto-code-ui/ui/index.html
+
+
+### 补充说明
+
+>1.pagehelper(mybatis分页插件.如果集成则分页失效)
+
+    在 MyBatis-Configuration.xml 配置文件中增加拦截器
+    
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+        </plugin>
+    </plugins>
+    
+>2.swagger2API接口文档.可选.如果不集成API看不了,(请注意.增加类的一定要在 `context:component-scan` 的扫描包里面.不然会找不到地址)
+
+> 增加配置类
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+@Component
+public class Swagger2 {
+    //swagger2的配置文件，这里可以配置swagger2的一些基本的内容，比如扫描的包等等
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                //为当前包路径
+                .apis(RequestHandlerSelectors.basePackage("com.zengtengpeng"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    //构建 api文档的详细信息函数,注意这里的注解引用的是哪个
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                //页面标题
+                .title("auto-code接口(swagger 目前有BUG,参数如果是实体类,设置忽略该参数不起作用.所以请忽略下面 (*.*) 带点的参数,这些参数不会被使用)")
+                //创建人
+                .contact(new Contact("ztp", "https://gitee.com/ztp/auto-code", "744489075@qq.com"))
+                //版本号
+                .version("1.0")
+                //描述
+                .description("API描述")
+                .build();
+    }
+}
+```
