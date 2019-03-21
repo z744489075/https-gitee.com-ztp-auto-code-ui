@@ -64,6 +64,7 @@ public class GlobalController {
         AutoCodeConfig a = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
         GlobalConfig globalConfig1 = a.getGlobalConfig();
         globalConfig.setAutoCode(globalConfig1.getAutoCode());
+        globalConfig.setWatchMobel(globalConfig1.getWatchMobel());
         a.setGlobalConfig(globalConfig);
         return DataRes.success("成功");
     }
@@ -81,6 +82,23 @@ public class GlobalController {
             Connection connection = dataSource.getConnection();
             List<String> tablesName = JDBCUtils.getTablesName(connection);
             return DataRes.success(tablesName);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * 获取根据表名获取字段
+     * @param request
+     * @param response
+     * @param tableName
+     * @return
+     */
+    @RequestMapping("getTablesColumn")
+    public DataRes getTablesColumn(HttpServletRequest request, HttpServletResponse response,String tableName)  {
+        try {
+            Connection connection = dataSource.getConnection();
+            List<String> tablesColumn = JDBCUtils.getTablesColumn(connection, tableName);
+            return DataRes.success(tablesColumn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

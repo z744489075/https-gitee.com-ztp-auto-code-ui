@@ -7,7 +7,9 @@
     <groupId>com.zengtengpeng</groupId>
     <artifactId>auto-code-ui</artifactId>
     <version>1.0.0</version>
-
+    <name>auto-code-ui</name>
+    <url>http://maven.apache.org</url>
+    <description>auto-code-ui</description>
     <properties>
         <spring.version>5.1.5.RELEASE</spring.version>
         <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
@@ -30,7 +32,23 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>zengtengpeng</name>
+            <email>744489075@qq.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git@gitee.com:ztp/auto-code-ui.git</connection>
+        <developerConnection>scm:git@gitee.com:ztp/auto-code-ui.git</developerConnection>
+        <url>https://gitee.com/ztp/auto-code-ui</url>
+    </scm>
     <build>
         <plugins>
             <plugin>
@@ -89,6 +107,15 @@
             </plugin>-->
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>center-maven</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>center-maven</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

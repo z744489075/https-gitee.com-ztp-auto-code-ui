@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zengtengpeng.autoCode.StartCode;
 import com.zengtengpeng.autoCode.config.AutoCodeConfig;
+import com.zengtengpeng.autoCode.config.TableConfig;
 import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.common.bean.DataRes;
+import com.zengtengpeng.common.bean.ResponseCode;
 import com.zengtengpeng.common.drive.AutoCodeDrive;
 import com.zengtengpeng.jdbc.bean.Bean;
 import com.zengtengpeng.jdbc.bean.BeanColumn;
@@ -46,19 +48,45 @@ public class SimpleController {
         return DataRes.success(bean);
     }
     /**
-     * 解析表结构
+     * 生成单表代码
      * @return
      */
     @RequestMapping("build")
     public DataRes build(HttpServletRequest request, HttpServletResponse response, Bean bean,String primaryKeys,String allColumnss) throws IOException {
         AutoCodeConfig autoCodeConfig = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
+        if(autoCodeConfig.getGlobalConfig().getWatchMobel()){
+            return DataRes.error(ResponseCode.WATCHMOBEL);
+        }
         ObjectMapper objectMapper=new ObjectMapper();
         bean.setPrimaryKey(RequestUtils.packBeanColumn(objectMapper.readValue(primaryKeys, List.class)));
         bean.setAllColumns(RequestUtils.packBeanColumn(objectMapper.readValue(allColumnss, List.class)));
+        bean.setParentPack(autoCodeConfig.getGlobalConfig().getParentPack());
         autoCodeConfig.setBean(bean);
         StartCode startCode = AutoCodeDrive.getStartCode();
         startCode.build(autoCodeConfig);
         return DataRes.success(bean);
+    }
+    /**
+     * 批量生成单表代码
+     * @return
+     */
+    @RequestMapping("buildBatch")
+    public DataRes buildBatch(String dataName,HttpServletRequest request) {
+        AutoCodeConfig autoCodeConfig = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
+        if(autoCodeConfig.getGlobalConfig().getWatchMobel()){
+            return DataRes.error(ResponseCode.WATCHMOBEL);
+        }
+        List<TableConfig> tn=new ArrayList<>();
+        for (String s : dataName.split(",")) {
+            TableConfig tableConfig=new TableConfig();
+            tableConfig.setDataName(s);
+            tn.add(tableConfig);
+        }
+
+        autoCodeConfig.getGlobalConfig().setTableNames(tn);
+        StartCode startCode = AutoCodeDrive.getStartCode();
+        startCode.start(autoCodeConfig);
+        return DataRes.success(1);
     }
 
 
