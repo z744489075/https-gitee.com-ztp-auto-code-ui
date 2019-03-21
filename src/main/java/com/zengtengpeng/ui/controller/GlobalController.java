@@ -21,7 +21,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -41,17 +40,9 @@ public class GlobalController {
     @Autowired
     private ServletContext servletContext;
 
+    @Autowired(required = false)
     private AutoCodeConfig autoCodeConfig;
 
-    public GlobalController() {
-
-    }
-
-    public GlobalController(GlobalConfig globalConfig) {
-        AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
-        autoCodeConfig.setGlobalConfig(globalConfig);
-        this.autoCodeConfig = autoCodeConfig;
-    }
 
     /**
      * 查询全局参数
@@ -136,11 +127,4 @@ public class GlobalController {
         }
     }
 
-    public AutoCodeConfig getAutoCodeConfig() {
-        return autoCodeConfig;
-    }
-
-    public void setAutoCodeConfig(AutoCodeConfig autoCodeConfig) {
-        this.autoCodeConfig = autoCodeConfig;
-    }
 }
