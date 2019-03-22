@@ -1,7 +1,9 @@
 # auto-code-ui
 欢迎使用auto-code-ui可视化界面代码生成器.
 #### 介绍
-本项目基于 [auto-code](https://gitee.com/ztp/auto-code),在该项目的基础上增加可视化界面生成 `单表`,`一对一`,`一对多`,`多对多`代码
+本项目基于 [auto-code](https://gitee.com/ztp/auto-code),
+在该项目的基础上增加可视化界面生成 `单表`,`一对一`,`一对多`,`多对多`代码.
+如果你使用的是spring boot 开发. 请看 [如何与spring-boot集成](https://gitee.com/ztp/auto-code-ui-spring-boot-starter).
 
 #### 软件架构
 
@@ -27,7 +29,7 @@
 ```
 
 
-#### 使用说明 [实例地址](https://gitee.com/ztp/auto-code-web-demo)
+#### 使用说明 [实例demo](https://gitee.com/ztp/auto-code-web-demo)
 
 >1.集成一个 id="dataSource" 的数据源(可以使用任何连接池.只要id=dataSource就行). 如下:
 ```xml
