@@ -64,7 +64,7 @@ globalConfig:
 
 ### 补充说明
 
->1.pagehelper(mybatis分页插件.如果集成则分页失效)
+>1.pagehelper(mybatis分页插件.如果不集成则分页失效)
 
     在 MyBatis-Configuration.xml 配置文件中增加拦截器
     
