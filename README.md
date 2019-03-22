@@ -48,7 +48,7 @@
 ```
 
 
-> 3.在 `src/main/resources` 下增加`auto-code.yaml`文件
+> 3.在 `src/main/resources` 下增加`auto-code.yaml`文件  (更多参数请参考 [auto-code](https://gitee.com/ztp/auto-code#3))
 ```yaml
 globalConfig:
   #生成代码的项目根路径
