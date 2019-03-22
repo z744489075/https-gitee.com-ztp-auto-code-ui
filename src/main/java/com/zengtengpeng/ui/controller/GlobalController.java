@@ -5,9 +5,11 @@ import com.zengtengpeng.autoCode.StartCode;
 import com.zengtengpeng.autoCode.config.AutoCodeConfig;
 import com.zengtengpeng.autoCode.config.DatasourceConfig;
 import com.zengtengpeng.autoCode.config.GlobalConfig;
+import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.common.bean.DataRes;
 import com.zengtengpeng.jdbc.utils.JDBCUtils;
 import com.zengtengpeng.ui.constant.ParamConstant;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -62,12 +66,34 @@ public class GlobalController {
      * @return
      */
     @RequestMapping("saveConfig")
-    public DataRes saveConfig(HttpServletRequest request, HttpServletResponse response, GlobalConfig globalConfig)  {
+    public DataRes saveConfig(HttpServletRequest request, HttpServletResponse response)  {
         AutoCodeConfig a = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
-        GlobalConfig globalConfig1 = a.getGlobalConfig();
-        globalConfig.setAutoCode(globalConfig1.getAutoCode());
-        globalConfig.setWatchMobel(globalConfig1.getWatchMobel());
-        a.setGlobalConfig(globalConfig);
+        GlobalConfig param = a.getGlobalConfig();
+        request.getParameterMap().forEach((key, value) -> {
+            for (Method method : param.getClass().getMethods()) {
+                if(method.getName().equals("set"+ MyStringUtils.firstUpperCase(key))){
+                    try {
+                        Class<?>[] parameterTypes = method.getParameterTypes();
+                        if(parameterTypes.length==1){
+                            String simpleName = parameterTypes[0].getSimpleName();
+                            if("Integer".equals(simpleName)||"int".equals(simpleName)){
+                                method.invoke(param, Integer.valueOf(value[0]));
+                            }else if("Boolean".equals(simpleName)||"boolean".equals(simpleName)){
+                                method.invoke(param, Boolean.valueOf(value[0]));
+                            }else if ("String".equals(simpleName)){
+                                method.invoke(param,value[0]);
+                            }else if ("Byte".equals(simpleName)){
+                                method.invoke(param,Byte.valueOf(value[0]));
+                            }
+                        }
+                    } catch (Exception e) {
+                       throw new RuntimeException(e);
+                    }
+                    break;
+                }
+            }
+        });
+        a.setGlobalConfig(param);
         return DataRes.success("成功");
     }
 
