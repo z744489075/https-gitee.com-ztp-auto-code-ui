@@ -6,7 +6,7 @@
 
     <groupId>com.zengtengpeng</groupId>
     <artifactId>auto-code-ui</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>auto-code-ui</name>
     <url>http://maven.apache.org</url>
     <description>auto-code-ui</description>
