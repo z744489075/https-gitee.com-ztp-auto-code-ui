@@ -9,14 +9,12 @@ import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.common.bean.DataRes;
 import com.zengtengpeng.jdbc.utils.JDBCUtils;
 import com.zengtengpeng.ui.constant.ParamConstant;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yaml.snakeyaml.Yaml;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -34,7 +32,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/auto-code-ui/data/global")
-@ApiIgnore
 public class GlobalController {
 
 

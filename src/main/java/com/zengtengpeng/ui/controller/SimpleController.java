@@ -15,7 +15,6 @@ import com.zengtengpeng.ui.constant.ParamConstant;
 import com.zengtengpeng.ui.utils.RequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +29,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/auto-code-ui/data/simple")
-@ApiIgnore
 public class SimpleController {
 
 
