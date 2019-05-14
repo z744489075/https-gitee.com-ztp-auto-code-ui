@@ -60,6 +60,9 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     $(function () {
+        $.ajaxSetup({
+            async : false
+        });
         $.post("../data/global/getTablesName",function (data) {
             if(data.code==0){
                 var d=data.data;
