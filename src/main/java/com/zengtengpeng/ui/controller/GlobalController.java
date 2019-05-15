@@ -12,6 +12,7 @@ import com.zengtengpeng.ui.constant.ParamConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yaml.snakeyaml.Yaml;
@@ -43,6 +44,11 @@ public class GlobalController {
 
     @Autowired(required = false)
     private AutoCodeConfig autoCodeConfig;
+
+    @Value("${spring.datasource.name:}")
+    private String name1;
+    @Value("${datasource.name:}")
+    private String name2;
 
 
     /**
@@ -105,7 +111,14 @@ public class GlobalController {
     public DataRes getTablesName(HttpServletRequest request, HttpServletResponse response, GlobalConfig globalConfig)  {
         try {
             Connection connection = dataSource.getConnection();
-            List<String> tablesName = JDBCUtils.getTablesName(connection);
+            String ca = null;
+            if(!MyStringUtils.isEmpty(name1)){
+                ca=name1;
+            }
+            if(!MyStringUtils.isEmpty(name2)){
+                ca=name2;
+            }
+            List<String> tablesName = JDBCUtils.getTablesName(connection,ca);
             return DataRes.success(tablesName);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -140,7 +153,14 @@ public class GlobalController {
         try {
             Connection connection = dataSource.getConnection();
             DatasourceConfig datasourceConfig = new DatasourceConfig();
-            datasourceConfig.setName(connection.getCatalog());
+            String catalog = connection.getCatalog();
+            if(!MyStringUtils.isEmpty(name1)){
+                catalog=name1;
+            }
+            if(!MyStringUtils.isEmpty(name2)){
+                catalog=name2;
+            }
+            datasourceConfig.setName(catalog);
             datasourceConfig.setDataSource(dataSource);
             autoCodeConfig.setDatasourceConfig(datasourceConfig);
             servletContext.setAttribute(ParamConstant.autoCodeConfig,autoCodeConfig);
