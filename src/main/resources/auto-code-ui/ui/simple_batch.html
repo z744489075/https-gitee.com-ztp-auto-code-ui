@@ -29,6 +29,11 @@
                 </select>
             </div>
         </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="button" class="layui-btn" onclick="watchs()"   value="生成预览" />
+            </div>
+        </div>
         <table id="table-data" lay-filter="table-data"></table>
         <div class="layui-form-item" style="text-align: center">
             <button class="layui-btn" lay-submit="" lay-filter="save-data" >确认生成</button>
@@ -56,6 +61,41 @@
             }
         })
     })
+    function tf(str){
+        var arr=str.split("_");
+        for(var i=0;i<arr.length;i++){
+            arr[i]=arr[i].charAt(0).toUpperCase()+arr[i].substring(1);
+        }
+        return arr.join("");
+    }
+    function watchs(){
+        var value = formSelects.value('dataName', 'valStr');
+        if(!value){
+            layer.alert("请选择需要生成的表");
+            return;
+        }
+        var tables=value.split(",");
+
+        var allColumns=[];
+
+        for (var i=0;i<tables.length;i++){
+            var json={};
+            json["dataName"]=tables[i];
+            json["aliasName"]=tf(tables[i]);
+            allColumns.push(json);
+        }
+        table.render({
+            elem: '#table-data'
+            , cols: [[ //表头
+                {field: 'checked', title: 'checked', type: "checkbox","LAY_CHECKED":"true"}
+                ,{field: 'dataName', title: '数据库名称'}
+                ,{field: 'aliasName', title: '别名(可修改)',edit: 'text'}
+            ]]
+            , data:allColumns,
+            limit:90
+        });
+
+    }
     layui.config({
         base: '../static/js/layui/extend/'
     }).extend({
@@ -78,10 +118,18 @@
 
         //监听提交
         form.on('submit(save-data)', function (data) {
+            var checkStatus = table.checkStatus('table-data'); //idTest 即为基础参数 id 对应的值
+            if(checkStatus.data.length===0){
+                layer.alert("请先生成预览,然后再选择需要生成的表");
+                return false;
+            }
             layer.confirm('批量生成不能自定义属性.只能按照系统默认的参数来生成.确定要生成吗？', {
                 btn: ['确定','取消'] //按钮
             }, function(){
-                $.post("../data/simple/buildBatch",data.field,function (data) {
+                $.ajaxSetup({
+                    async : true
+                });
+               $.post("../data/simple/buildBatch",{"col":JSON.stringify(checkStatus.data)},function (data) {
                     if(data.code==0){
                         layer.alert("生成成功,具体请查看控制台打印日志")
                     }else{

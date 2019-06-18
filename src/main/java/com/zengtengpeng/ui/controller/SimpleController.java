@@ -69,18 +69,20 @@ public class SimpleController {
      * @return
      */
     @RequestMapping("buildBatch")
-    public DataRes buildBatch(String dataName,HttpServletRequest request) {
+    public DataRes buildBatch(String col,HttpServletRequest request) throws IOException {
         AutoCodeConfig autoCodeConfig = (AutoCodeConfig) request.getServletContext().getAttribute(ParamConstant.autoCodeConfig);
         if(autoCodeConfig.getGlobalConfig().getWatchMobel()){
             return DataRes.error(ResponseCode.WATCHMOBEL);
         }
+        ObjectMapper objectMapper=new ObjectMapper();
+        List<Map<String,String>> list = objectMapper.readValue(col, List.class);
         List<TableConfig> tn=new ArrayList<>();
-        for (String s : dataName.split(",")) {
+        for (Map<String, String> stringStringMap : list) {
             TableConfig tableConfig=new TableConfig();
-            tableConfig.setDataName(s);
+            tableConfig.setDataName(stringStringMap.get("dataName"));
+            tableConfig.setAliasName(stringStringMap.get("aliasName"));
             tn.add(tableConfig);
         }
-
         autoCodeConfig.getGlobalConfig().setTableNames(tn);
         StartCode startCode = AutoCodeDrive.getStartCode();
         startCode.start(autoCodeConfig);
