@@ -1,5 +1,5 @@
 # auto-code-ui
-欢迎使用auto-code-ui可视化界面代码生成器. [演示地址](http://106.13.119.110:8010/auto-code-ui/ui/index.html)
+欢迎使用auto-code-ui可视化界面代码生成器. [演示地址](http://106.13.101.206:8010/auto-code-ui/ui/index.html)
 #### 介绍
 本项目基于 [auto-code](https://gitee.com/ztp/auto-code),
 在该项目的基础上增加可视化界面生成 `单表`,`一对一`,`一对多`,`多对多`代码.
